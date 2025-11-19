@@ -120,17 +120,6 @@
   <metadata name="stsOutput.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnDelete.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAADlQTFRF9vn5
-        9vb2/wAA/iMjAAAA/S8v99ra+L6+/UtL99PT/UFB98fH+LS0+amp/Tk599/f/FdX/ggI9uPjI8GaqAAA
-        AMZJREFUKFNlklESgyAMBV9CABWotvc/bEsSKg5+6MzuCMlLQKgVND/IjUiAGsLDoMTQIGiBeTYokTk0
-        wcXMHPIwypk3QXqYwZMA53YblJdxCGiYAsKu/EggARGSmlgmroKQDjVNP8femYph3v31Uu6CsKu5+RDj
-        Wo7Ob2GHLcILW47yVvRyK8rLNR6bxqFtWIPOiwc1GsRHY4w9khFhj8S5h5jNnBCcz9hzsH/WQZm5fLR/
-        TkTd9NH2ZZg52Xb0qpb1qe1X1Rf9cweoQfUmvwAAAABJRU5ErkJggg==
-</value>
-  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>45</value>
   </metadata>

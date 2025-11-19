@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             pbLogo = new PictureBox();
             lblTitle = new Label();
             lblLicenceManagement = new Label();
@@ -115,6 +114,8 @@
             lbLicPlates.Name = "lbLicPlates";
             lbLicPlates.Size = new Size(128, 349);
             lbLicPlates.TabIndex = 5;
+            lbLicPlates.SelectedIndexChanged += lbLicPlates_SelectedIndexChanged;
+            lbLicPlates.MouseDoubleClick += lbLicPlates_MouseDoubleClick;
             // 
             // lbTagPlates
             // 
@@ -123,6 +124,8 @@
             lbTagPlates.Name = "lbTagPlates";
             lbTagPlates.Size = new Size(120, 349);
             lbTagPlates.TabIndex = 6;
+            lbTagPlates.SelectedIndexChanged += lbTagPlates_SelectedIndexChanged;
+            lbTagPlates.MouseDoubleClick += lbTagPlates_MouseDoubleClick;
             // 
             // btnLeft
             // 
@@ -213,10 +216,11 @@
             btnEdit.TabIndex = 15;
             btnEdit.Text = "Edit";
             btnEdit.UseVisualStyleBackColor = true;
+            btnEdit.Click += btnEdit_Click;
             // 
             // btnDelete
             // 
-            btnDelete.Image = (Image)resources.GetObject("btnDelete.Image");
+            btnDelete.Image = Properties.Resources.redx;
             btnDelete.Location = new Point(144, 366);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(24, 24);
@@ -231,6 +235,7 @@
             btnSearchLin.TabIndex = 17;
             btnSearchLin.Text = "Linear";
             btnSearchLin.UseVisualStyleBackColor = true;
+            btnSearchLin.Click += btnSearchLin_Click;
             // 
             // btnSearchBin
             // 
@@ -240,6 +245,7 @@
             btnSearchBin.TabIndex = 18;
             btnSearchBin.Text = "Binary";
             btnSearchBin.UseVisualStyleBackColor = true;
+            btnSearchBin.Click += btnSearchBin_Click;
             // 
             // lblSearch
             // 
