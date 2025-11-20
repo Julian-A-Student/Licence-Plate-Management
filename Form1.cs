@@ -18,21 +18,12 @@ namespace Licence_Plate_Management
         }
 
         /// <summary>
-        /// Updates the rtb text used for notices
-        /// </summary>
-        /// <param name="text"></param>
-        private void UpdateText(string text)
-        {
-            tsslOutput.ForeColor = Color.Black;
-            tsslOutput.Text = text;
-        }
-
-        /// <summary>
-        /// Override for UpdateText for color output for error messages
+        /// Util function for updating text with varying color messages, 
+        /// default is black
         /// </summary>
         /// <param name="text"></param>
         /// <param name="col"></param>
-        private void UpdateText(string text, Color col)
+        private void UpdateText(string text, Color col = default)
         {
             tsslOutput.ForeColor = col;
             tsslOutput.Text = text;
@@ -44,13 +35,13 @@ namespace Licence_Plate_Management
         /// <param name="type"></param>
         private void UpdateLB(string type = "both")
         {
-            if (type == "licence")
+            if (String.Equals(type, "licence"))
             {
                 licencePlates.Sort();
                 lbLicPlates.DataSource = null; // Reset
                 lbLicPlates.DataSource = licencePlates;
             }
-            else if (type == "tagged")
+            else if (String.Equals(type, "tagged"))
             {
                 taggedPlates.Sort();
                 lbTagPlates.DataSource = null;
@@ -71,8 +62,8 @@ namespace Licence_Plate_Management
         private void btnAdd_Click(object sender, EventArgs e)
         {
             string input = txtInput.Text.ToUpper();
-            string validity = ValidPlate(input);
-            if (validity == "true")
+            string validity = ValidPlate(input, true);
+            if (String.Equals(validity, "true"))
             {
                 licencePlates.Add(input);
                 UpdateLB("licence");
@@ -86,17 +77,17 @@ namespace Licence_Plate_Management
 
         }
 
-        private string ValidPlate(string plate)
+        private string ValidPlate(string plate, bool unique = false)
         {
             if (!Regex.IsMatch(plate, "^1[A-Z]{3}-[0-9]{3}$"))
             {
                 return "License Plate is not valid, correct format: 1ABC-123";
             }
-            if (licencePlates.Contains(plate))
+            if (unique && licencePlates.Contains(plate))
             {
                 return "License Plate already exists in licence listbox";
             }
-            else if (taggedPlates.Contains(plate))
+            else if (unique && taggedPlates.Contains(plate))
             {
                 return "License Plate already exists in tagged listbox";
             }
@@ -156,8 +147,8 @@ namespace Licence_Plate_Management
             if (lbLicPlates.SelectedIndex > -1)
             {
                 string input = txtInput.Text.ToUpper();
-                string validity = ValidPlate(input);
-                if (validity == "true")
+                string validity = ValidPlate(input, true);
+                if (String.Equals(validity, "true"))
                 {
                     string old = licencePlates[lbLicPlates.SelectedIndex].ToUpper();
                     licencePlates[lbLicPlates.SelectedIndex] = input;
@@ -181,7 +172,7 @@ namespace Licence_Plate_Management
         {
             string input = txtInput.Text.ToUpper();
             string validity = ValidPlate(input);
-            if (validity == "true")
+            if (String.Equals(validity, "true"))
             {
                 for (int i = 0; i < licencePlates.Count; i++)
                 {
@@ -209,37 +200,20 @@ namespace Licence_Plate_Management
             }
         }
 
-        private void btnSearchBin_Click(object sender, EventArgs e)
+        private int BinarySearch(string type, string input)
         {
+            List<string> localList = String.Equals(type, "licence") ? licencePlates : taggedPlates;
             int min = 0;
-            int max = licencePlates.Count - 1;
-
-            string input = txtInput.Text.ToUpper();
-            string validity = ValidPlate(input);
-            if (validity == "true")
-            {
-
-            }
-            else
-            {
-                UpdateText(validity, Color.Red);
-            }
-            // Binary search requires values to be sorted first
-            LinearSort();
-            UpdateLB();
-            UpdateHourLabel();
-
+            int max = localList.Count - 1;
             while (min <= max)
             {
                 int mid = (min + max) / 2;
                 // If the value is found, notify user, select the value in lb and exit function
-                if (searchVal == neutrinoArr[mid])
+                if (localList[mid].CompareTo(input) == 0)
                 {
-                    UpdateText(searchVal + " was found at hour " + (indexOrder[mid] + 1) + ".");
-                    lbNeutrino.SelectedIndex = mid;
-                    return;
+                    return mid;
                 }
-                else if (neutrinoArr[mid] >= searchVal)
+                else if (licencePlates[mid].CompareTo(input) > 0)
                 {
                     max = mid - 1;
                 }
@@ -248,8 +222,73 @@ namespace Licence_Plate_Management
                     min = mid + 1;
                 }
             }
-            // If it was unable to find the requested value, notify user
-            UpdateText("No values found matching " + searchVal + ".", Color.OrangeRed);
+            return -1;
         }
+
+        private void btnSearchBin_Click(object sender, EventArgs e)
+        {
+            string input = txtInput.Text.ToUpper();
+            string validity = ValidPlate(input);
+            if (String.Equals(validity, "true"))
+            {
+                int result = BinarySearch("licence", input);
+                if (result < 0)
+                {
+                    if (BinarySearch("tagged", input) < 0)
+                    {
+                        // If it was unable to find the requested value, notify user
+                        UpdateText("No licence plates found matching " + input + ".", Color.OrangeRed);
+                    }
+                    else
+                    {
+                        UpdateText(input + " found in tagged plates at index " + result);
+                        lbTagPlates.SelectedIndex = result;
+                    }
+                }
+                else
+                {
+                    UpdateText(input + " found in licence plates at index " + result);
+                    lbLicPlates.SelectedIndex = result;
+                }
+            }
+            else
+            {
+                UpdateText(validity, Color.Red);
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to clear all licence " +
+                "plates (including tagged)?", "Confirmation", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                licencePlates.Clear();
+                taggedPlates.Clear();
+                UpdateLB();
+            }
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog search = new OpenFileDialog()) 
+            {
+                search.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                search.RestoreDirectory = true;
+
+                if (search.ShowDialog() == DialogResult.OK)
+                {
+                    var path = search.FileName;
+                    var fileStream = search.OpenFile();
+
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {
+                        var content = reader.ReadToEnd();
+                        List<string> lic;
+
+                    }
+                }
+            }
     }
 }

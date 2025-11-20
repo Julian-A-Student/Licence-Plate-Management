@@ -41,7 +41,7 @@
             tstlOutput = new ToolStripStatusLabel();
             tsslOutput = new ToolStripStatusLabel();
             button1 = new Button();
-            button2 = new Button();
+            btnLoad = new Button();
             button3 = new Button();
             txtInput = new TextBox();
             btnAdd = new Button();
@@ -173,14 +173,15 @@
             button1.Text = "Save";
             button1.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnLoad
             // 
-            button2.Location = new Point(392, 178);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 11;
-            button2.Text = "Load";
-            button2.UseVisualStyleBackColor = true;
+            btnLoad.Location = new Point(392, 178);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(75, 23);
+            btnLoad.TabIndex = 11;
+            btnLoad.Text = "Load";
+            btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Click += btnLoad_Click;
             // 
             // button3
             // 
@@ -288,6 +289,7 @@
             btnReset.Text = "RESET";
             btnReset.TextAlign = ContentAlignment.MiddleRight;
             btnReset.UseVisualStyleBackColor = true;
+            btnReset.Click += btnReset_Click;
             // 
             // Form1
             // 
@@ -306,7 +308,7 @@
             Controls.Add(btnAdd);
             Controls.Add(txtInput);
             Controls.Add(button3);
-            Controls.Add(button2);
+            Controls.Add(btnLoad);
             Controls.Add(button1);
             Controls.Add(stsOutput);
             Controls.Add(btnRight);
@@ -342,7 +344,7 @@
         private StatusStrip stsOutput;
         private ToolStripStatusLabel tstlOutput;
         private Button button1;
-        private Button button2;
+        private Button btnLoad;
         private Button button3;
         private TextBox txtInput;
         private Button btnAdd;
